@@ -11,7 +11,7 @@ namespace EchoPlayManager
 {
     public partial class ApksForm : Form
     {
-        private readonly string host = "http://192.168.1.35:3000";
+        private readonly string host = "https://downloaded-warranty-skill-common.trycloudflare.com";
         private readonly HttpClient client = new HttpClient();
         private string selectedApkPath = "";
 
@@ -100,13 +100,23 @@ namespace EchoPlayManager
                 using (var content = new MultipartFormDataContent())
                 {
                     var fileStream = File.OpenRead(selectedApkPath);
-                    content.Add(new StreamContent(fileStream), "apk", Path.GetFileName(selectedApkPath));
+
+                    // 🔧 Forzamos el tipo MIME correcto
+                    var fileContent = new StreamContent(fileStream);
+                    fileContent.Headers.ContentType =
+                        new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.android.package-archive");
+
+                    // 🔧 Mandamos ya con el nombre correcto
+                    var newFileName = $"echoplay-{version}.apk";
+                    content.Add(fileContent, "apk", newFileName);
+
+                    // Mandamos también la versión como campo de texto si quieres
                     content.Add(new StringContent(version), "version");
 
                     var response = await client.PostAsync($"{host}/apk/upload", content);
                     response.EnsureSuccessStatusCode();
 
-                    UpdateStatus($"APK subida y renombrada a echoplay-{version}.apk correctamente.");
+                    UpdateStatus($"APK subida y renombrada a {newFileName} correctamente.");
                     LoadApksFromServer();
                 }
             }
