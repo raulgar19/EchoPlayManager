@@ -4,6 +4,7 @@ namespace EchoPlayManager
     {
         private SongsForm songsForm;
         private UsersForm usersForm;
+        private ApksForm apksForm;
 
         public MainForm()
         {
@@ -33,6 +34,19 @@ namespace EchoPlayManager
             else
             {
                 usersForm.BringToFront(); // si ya está abierta, traerla al frente
+            }
+        }
+
+        private void apksManageBttn_Click(object sender, EventArgs e)
+        {
+            if (apksForm == null || apksForm.IsDisposed) // si no existe o ya fue cerrada
+            {
+                apksForm = new ApksForm();
+                apksForm.Show();
+            }
+            else
+            {
+                apksForm.BringToFront(); // si ya está abierta, traerla al frente
             }
         }
     }

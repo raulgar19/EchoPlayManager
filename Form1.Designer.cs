@@ -33,13 +33,14 @@
             songsManageBttn = new Button();
             pictureBox1 = new PictureBox();
             optionsGrpBox = new GroupBox();
+            apksManageBttn = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             optionsGrpBox.SuspendLayout();
             SuspendLayout();
             // 
             // usersManageBttn
             // 
-            usersManageBttn.Location = new Point(35, 97);
+            usersManageBttn.Location = new Point(35, 68);
             usersManageBttn.Name = "usersManageBttn";
             usersManageBttn.Size = new Size(128, 23);
             usersManageBttn.TabIndex = 1;
@@ -49,7 +50,7 @@
             // 
             // songsManageBttn
             // 
-            songsManageBttn.Location = new Point(35, 42);
+            songsManageBttn.Location = new Point(35, 25);
             songsManageBttn.Name = "songsManageBttn";
             songsManageBttn.Size = new Size(128, 23);
             songsManageBttn.TabIndex = 0;
@@ -69,6 +70,7 @@
             // 
             // optionsGrpBox
             // 
+            optionsGrpBox.Controls.Add(apksManageBttn);
             optionsGrpBox.Controls.Add(songsManageBttn);
             optionsGrpBox.Controls.Add(usersManageBttn);
             optionsGrpBox.Location = new Point(63, 42);
@@ -77,6 +79,16 @@
             optionsGrpBox.TabIndex = 5;
             optionsGrpBox.TabStop = false;
             optionsGrpBox.Text = "Opciones";
+            // 
+            // apksManageBttn
+            // 
+            apksManageBttn.Location = new Point(35, 111);
+            apksManageBttn.Name = "apksManageBttn";
+            apksManageBttn.Size = new Size(128, 23);
+            apksManageBttn.TabIndex = 2;
+            apksManageBttn.Text = "Gestión de APKs";
+            apksManageBttn.UseVisualStyleBackColor = true;
+            apksManageBttn.Click += apksManageBttn_Click;
             // 
             // MainForm
             // 
@@ -98,5 +110,6 @@
         private PictureBox pictureBox1;
         private Button usersManageBttn;
         private GroupBox optionsGrpBox;
+        private Button apksManageBttn;
     }
 }
