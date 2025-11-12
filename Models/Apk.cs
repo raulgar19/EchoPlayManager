@@ -8,6 +8,8 @@ namespace EchoPlayManager.Models
 {
     internal class Apk
     {
-        public string name { get; set; }
+        public int Id { get; set; }
+        public string Version { get; set; }
+        public string Url { get; set; }
     }
 }

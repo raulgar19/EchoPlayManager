@@ -1,6 +1,7 @@
 ﻿using EchoPlayManager.Models;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -11,9 +12,10 @@ namespace EchoPlayManager
 {
     public partial class ApksForm : Form
     {
-        private readonly string host = "https://downloaded-warranty-skill-common.trycloudflare.com";
+        private readonly string host = "https://echoplaybackend.onrender.com";
         private readonly HttpClient client = new HttpClient();
         private string selectedApkPath = "";
+        private Apk[] apksList; // Guardamos la lista completa para poder acceder por índice
 
         public ApksForm()
         {
@@ -36,13 +38,13 @@ namespace EchoPlayManager
                 response.EnsureSuccessStatusCode();
 
                 string json = await response.Content.ReadAsStringAsync();
-                var apks = JsonConvert.DeserializeObject<Apk[]>(json);
+                apksList = JsonConvert.DeserializeObject<Apk[]>(json);
 
-                foreach (var apk in apks)
+                foreach (var apk in apksList)
                 {
-                    dataGridView1.Rows.Add(apk.name, "Descargar");
+                    dataGridView1.Rows.Add(apk.Version, "Descargar");
                 }
-                UpdateStatus($"Se cargaron {apks.Length} APKs correctamente.");
+                UpdateStatus($"Se cargaron {apksList.Length} APKs correctamente.");
             }
             catch (Exception ex)
             {
@@ -50,33 +52,39 @@ namespace EchoPlayManager
             }
         }
 
-        private async void DownloadApk(string apkName)
+        private void DownloadApk(int rowIndex)
         {
             try
             {
-                using (SaveFileDialog sfd = new SaveFileDialog())
+                if (rowIndex < 0 || rowIndex >= apksList.Length)
                 {
-                    sfd.FileName = apkName;
-                    sfd.Filter = "APK Files|*.apk";
-                    sfd.Title = "Guardar APK en Descargas";
+                    UpdateStatus("Error: índice de fila inválido.");
+                    return;
+                }
 
-                    if (sfd.ShowDialog() == DialogResult.OK)
+                var selectedApk = apksList[rowIndex];
+                
+                if (selectedApk != null && !string.IsNullOrEmpty(selectedApk.Url))
+                {
+                    UpdateStatus($"Abriendo enlace de descarga para APK versión {selectedApk.Version}...");
+                    
+                    // Abrir la URL en el navegador predeterminado
+                    Process.Start(new ProcessStartInfo
                     {
-                        UpdateStatus($"Descargando {apkName}...");
-                        var url = $"{host}/apk/download/{apkName}";
-                        var data = await client.GetByteArrayAsync(url);
-                        File.WriteAllBytes(sfd.FileName, data);
-                        UpdateStatus($"APK {apkName} descargada correctamente.");
-                    }
-                    else
-                    {
-                        UpdateStatus("Descarga cancelada por el usuario.");
-                    }
+                        FileName = selectedApk.Url,
+                        UseShellExecute = true
+                    });
+                    
+                    UpdateStatus($"Enlace de descarga abierto. Descarga el APK desde tu navegador.");
+                }
+                else
+                {
+                    UpdateStatus("No se encontró la URL de descarga para este APK.");
                 }
             }
             catch (Exception ex)
             {
-                UpdateStatus($"Error al descargar APK: {ex.Message}");
+                UpdateStatus($"Error al obtener información del APK: {ex.Message}");
             }
         }
 
@@ -146,8 +154,7 @@ namespace EchoPlayManager
         {
             if (e.RowIndex >= 0 && e.ColumnIndex == 1) // Columna "Descargar"
             {
-                string apkName = dataGridView1.Rows[e.RowIndex].Cells[0].Value.ToString();
-                DownloadApk(apkName);
+                DownloadApk(e.RowIndex);
             }
         }
 

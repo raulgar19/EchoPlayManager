@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ApksForm));
             dataGridView1 = new DataGridView();
-            name = new DataGridViewTextBoxColumn();
+            version = new DataGridViewTextBoxColumn();
             download = new DataGridViewButtonColumn();
             versionLbl = new Label();
             statusLabel = new Label();
@@ -46,31 +46,32 @@
             // 
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { name, download });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { version, download });
             dataGridView1.Location = new Point(12, 12);
             dataGridView1.Name = "dataGridView1";
-            dataGridView1.Size = new Size(220, 309);
+            dataGridView1.Size = new Size(350, 309);
             dataGridView1.TabIndex = 0;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
-            // name
+            // version
             // 
-            name.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            name.HeaderText = "Nombre";
-            name.Name = "name";
-            name.Width = 76;
+            version.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            version.HeaderText = "Versión";
+            version.Name = "version";
             // 
             // download
             // 
             download.AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             download.HeaderText = "Descargar";
             download.Name = "download";
+            download.Text = "Descargar";
+            download.UseColumnTextForButtonValue = true;
             download.Width = 65;
             // 
             // versionLbl
             // 
             versionLbl.AutoSize = true;
-            versionLbl.Location = new Point(285, 132);
+            versionLbl.Location = new Point(372, 129);
             versionLbl.Name = "versionLbl";
             versionLbl.Size = new Size(48, 15);
             versionLbl.TabIndex = 1;
@@ -87,7 +88,7 @@
             // 
             // versionTxtBox
             // 
-            versionTxtBox.Location = new Point(339, 129);
+            versionTxtBox.Location = new Point(426, 126);
             versionTxtBox.Name = "versionTxtBox";
             versionTxtBox.Size = new Size(100, 23);
             versionTxtBox.TabIndex = 3;
@@ -111,7 +112,7 @@
             // 
             // selectFileBttn
             // 
-            selectFileBttn.Location = new Point(295, 168);
+            selectFileBttn.Location = new Point(382, 165);
             selectFileBttn.Name = "selectFileBttn";
             selectFileBttn.Size = new Size(124, 23);
             selectFileBttn.TabIndex = 6;
@@ -121,7 +122,7 @@
             // 
             // uploadBttn
             // 
-            uploadBttn.Location = new Point(295, 235);
+            uploadBttn.Location = new Point(382, 232);
             uploadBttn.Name = "uploadBttn";
             uploadBttn.Size = new Size(124, 23);
             uploadBttn.TabIndex = 7;
@@ -133,7 +134,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(451, 410);
+            ClientSize = new Size(538, 410);
             Controls.Add(uploadBttn);
             Controls.Add(selectFileBttn);
             Controls.Add(fileLbl);
@@ -160,7 +161,7 @@
         private Label fileLbl;
         private Button selectFileBttn;
         private Button uploadBttn;
-        private DataGridViewTextBoxColumn name;
+        private DataGridViewTextBoxColumn version;
         private DataGridViewButtonColumn download;
     }
 }
